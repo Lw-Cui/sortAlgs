@@ -20,3 +20,7 @@ void sortIndex(vector<int> &array, int left, int right) {
 void sort(vector<int> &array) {
     sortIndex(array, 0, array.size());
 }
+
+const char *self() {
+    return "Quick sort";
+}

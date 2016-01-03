@@ -13,3 +13,7 @@ void sort(vector<int> &array) {
         array[j + 1] = tmp;
     }
 }
+
+const char *self() {
+    return "Insertion sort";
+}

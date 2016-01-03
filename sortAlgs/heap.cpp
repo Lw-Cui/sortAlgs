@@ -33,3 +33,7 @@ void sort(vector<int> &array) {
         push_down(array, i, 0);
     }
 }
+
+const char *self() {
+    return "Heap sort";
+}

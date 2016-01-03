@@ -3,5 +3,6 @@
 #include <vector>
 extern "C" {
     void sort(std::vector<int> &array);
+    const char *self();
 }
 #endif
