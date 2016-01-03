@@ -3,7 +3,7 @@
 using namespace std;
 
 void sort(vector<int> &array) {
-    for (int i = 1; i < array.size(); i++) {
+    for (size_t i = 1; i < array.size(); i++) {
         int tmp = array[i];
         int j = i - 1;
         while (j >= 0 && array[j] > tmp) {
