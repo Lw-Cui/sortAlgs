@@ -1,8 +1,13 @@
 #include <dlfcn.h>
+#include <ctime>
+#include <cstdlib>
 #include <vector>
 #include <cstdio>
 using namespace std;
-typedef void (*Mp)(void);
+typedef void (*Mp)(vector<int> &);
+typedef const char *(*Self)();
+const char *ALGS = "sort";
+const char *NAME = "self";
 
 void load_handle(vector<void *> &handle, int num, char *so[]) {
     void *lib_handle = NULL;
@@ -15,15 +20,21 @@ void load_handle(vector<void *> &handle, int num, char *so[]) {
     }
 }
 
-void load_algs(vector<void *> &handle, vector<Mp> &algs, char *func) {
+void load_algs(vector<void *> &handle, vector<pair<Self, Mp> > &algs) {
     Mp method = NULL;
+    Self self = NULL;
 
     for (int i = 0; i < handle.size(); i++) {
-        if ((method = (Mp)dlsym(handle[i], func)) == NULL) {
+        if ((self = (Self)dlsym(handle[i], NAME)) == NULL) {
             printf("Open Error %s\n", dlerror());
             continue;
         }
-        algs.push_back(method);
+
+        if ((method = (Mp)dlsym(handle[i], ALGS)) == NULL) {
+            printf("Open Error %s\n", dlerror());
+            continue;
+        }
+        algs.push_back(make_pair(self, method));
     }
 }
 
@@ -33,19 +44,51 @@ void destruct_handle(vector<void *> &handle) {
     handle.clear();
 }
 
-int main(int argc, char *argv[]) {
-    vector<Mp> algs;
-    vector<void *> handle;
+bool is_correct(vector<int> &array) {
+    for (int i = 1; i < array.size(); i++)
+        if (array[i - 1] > array[i])
+            return false;
+    return true;
+}
 
+vector<int> random(int num) {
+    vector<int> random_variable;
+
+    srand(time(NULL));
+    while (num--) 
+        random_variable.push_back(rand());
+
+    return random_variable;
+}
+
+int main(int argc, char *argv[]) {
     if (argc < 3) return 0;
 
-    load_handle(handle, argc - 2, argv + 2);
-    load_algs(handle, algs, argv[1]);
+    vector<pair<Self, Mp> > algs;
+    vector<void *> handle;
 
-    for (int i = 0; i < algs.size(); i++)
-        (*algs[i])();
+    load_handle(handle, argc - 1, argv + 1);
+    load_algs(handle, algs);
+
+    
+    vector<int> origin = random(5000);
+
+    for (int i = 0; i < algs.size(); i++) {
+        vector<int> data = origin;
+        (*algs[i].second)(data);
+
+        /*
+        for (int i = 0; i < data.size(); i++)
+            printf("%d ", data[i]);
+        */
+
+        const char *name = (*algs[i].first)();
+        if (is_correct(data))
+            printf("%s Success!\n", name);
+        else 
+            printf("%s Failed.\n", name);
+    }
 
     destruct_handle(handle);
-
     return 0;
 }
