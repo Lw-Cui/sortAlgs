@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
+#include <map>
 #include <cstdio>
 using namespace std;
 typedef void (*Mp)(vector<int> &);
@@ -70,8 +71,10 @@ int main(int argc, char *argv[]) {
     load_handle(handle, argc - 1, argv + 1);
     load_algs(handle, algs);
 
-    
-    vector<int> origin = random(50000);
+    int num = 10000;
+    multimap<double, const char *> res;
+    vector<int> origin = random(num);
+    printf("For %d integers\n", num);
 
     for (int i = 0; i < algs.size(); i++) {
         vector<int> data = origin;
@@ -80,16 +83,21 @@ int main(int argc, char *argv[]) {
         (*algs[i].second)(data);
         clock_t finish = clock();
 
+        if (is_correct(data))
+            res.insert(make_pair((double)(finish - start) / CLOCKS_PER_SEC,
+                        (*algs[i].first)()));
         /*
         for (int i = 0; i < data.size(); i++)
             printf("%d ", data[i]);
         */
+    }
 
-        const char *name = (*algs[i].first)();
-        if (is_correct(data))
-            printf("%s use %.3f seconds\n", name, (double)(finish - start) / CLOCKS_PER_SEC);
-        else 
-            printf("%s Failed.\n", name);
+    typedef multimap<double, const char *>::iterator multip;
+    for (multip p = res.begin(); p != res.end();) {
+        multip last = p++;
+        if (p == res.end()) break;
+        printf("    %s is %.2f times faster than %s\n",
+                last->second, p->first / last->first, p->second);
     }
 
     destruct_handle(handle);
