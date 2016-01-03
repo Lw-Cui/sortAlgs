@@ -71,11 +71,14 @@ int main(int argc, char *argv[]) {
     load_algs(handle, algs);
 
     
-    vector<int> origin = random(5000);
+    vector<int> origin = random(50000);
 
     for (int i = 0; i < algs.size(); i++) {
         vector<int> data = origin;
+
+        clock_t start = clock();
         (*algs[i].second)(data);
+        clock_t finish = clock();
 
         /*
         for (int i = 0; i < data.size(); i++)
@@ -84,7 +87,7 @@ int main(int argc, char *argv[]) {
 
         const char *name = (*algs[i].first)();
         if (is_correct(data))
-            printf("%s Success!\n", name);
+            printf("%s use %.3f seconds\n", name, (double)(finish - start) / CLOCKS_PER_SEC);
         else 
             printf("%s Failed.\n", name);
     }
