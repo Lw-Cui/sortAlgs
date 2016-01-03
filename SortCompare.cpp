@@ -71,33 +71,35 @@ int main(int argc, char *argv[]) {
     load_handle(handle, argc - 1, argv + 1);
     load_algs(handle, algs);
 
-    int num = 10000;
-    multimap<double, const char *> res;
-    vector<int> origin = random(num);
-    printf("For %d integers\n", num);
+    for (int num = 1; num < 10; num += 2) {
+        multimap<double, const char *> res;
+        vector<int> origin = random(num * 1000);
+        printf("\nFor %d integers\n", num * 1000);
 
-    for (int i = 0; i < algs.size(); i++) {
-        vector<int> data = origin;
+        for (int i = 0; i < algs.size(); i++) {
+            vector<int> data = origin;
 
-        clock_t start = clock();
-        (*algs[i].second)(data);
-        clock_t finish = clock();
+            clock_t start = clock();
+            //printf("%s\n", (*algs[i].first)());
+            (*algs[i].second)(data);
+            clock_t finish = clock();
 
-        if (is_correct(data))
-            res.insert(make_pair((double)(finish - start) / CLOCKS_PER_SEC,
-                        (*algs[i].first)()));
-        /*
-        for (int i = 0; i < data.size(); i++)
-            printf("%d ", data[i]);
-        */
-    }
+            if (is_correct(data))
+                res.insert(make_pair((double)(finish - start) / CLOCKS_PER_SEC,
+                            (*algs[i].first)()));
+            /*
+            for (int i = 0; i < data.size(); i++)
+                printf("%d ", data[i]);
+            */
+        }
 
-    typedef multimap<double, const char *>::iterator multip;
-    for (multip p = res.begin(); p != res.end();) {
-        multip last = p++;
-        if (p == res.end()) break;
-        printf("    %s is %.2f times faster than %s\n",
-                last->second, p->first / last->first, p->second);
+        typedef multimap<double, const char *>::iterator multip;
+        for (multip p = res.begin(); p != res.end();) {
+            multip last = p++;
+            if (p == res.end()) break;
+            printf("    %s is %.2f times faster than %s\n",
+                    last->second, p->first / last->first, p->second);
+        }
     }
 
     destruct_handle(handle);
