@@ -10,18 +10,15 @@ int right(int pos) {
 }
 
 void push_down(vector<int> &array, int end, int pos) {
-    while (left(pos) < end) {
-        if (right(pos) < end && array[left(pos)] < array[right(pos)] 
-                && array[pos] < array[right(pos)]) {
-            swap(array[right(pos)], array[pos]);
-            pos = right(pos);
-        } else if (array[pos] < array[left(pos)]) {
-            swap(array[left(pos)], array[pos]);
-            pos = left(pos);
-        } else {
-            break;
-        }
-    }
+	while (left(pos) < end) {
+		int next = left(pos);
+		if (next + 1 < end && array[next] < array[next + 1])
+			next++;
+		if (array[next] <= array[pos])
+			break;
+		swap(array[next], array[pos]);
+		pos = next;
+	}
 }
 
 void sort(vector<int> &array) {
