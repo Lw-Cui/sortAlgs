@@ -45,11 +45,16 @@ void destruct_handle(vector<void *> &handle) {
     handle.clear();
 }
 
-bool is_correct(vector<int> &array) {
+bool is_correct(vector<int> &array, long long check_sum) {
     for (int i = 1; i < array.size(); i++)
         if (array[i - 1] > array[i])
             return false;
-    return true;
+
+	long long sum = 0;
+	for (int i = 0; i < array.size(); i++)
+		sum += array[i];
+
+	return sum == check_sum? true: false;
 }
 
 vector<int> random(int num) {
@@ -73,8 +78,12 @@ int main(int argc, char *argv[]) {
 
     for (int num = 1; num < 10; num += 2) {
         multimap<double, const char *> res;
-        vector<int> origin = random(num * 1000);
-        printf("\nFor %d integers\n", num * 1000);
+        vector<int> origin = random(num * 10000);
+
+		long long check_sum = 0;
+		for (int i = 0; i < origin.size(); i++)
+			check_sum += origin[i];
+        printf("\nFor %d integers\n", num * 10000);
 
         for (int i = 0; i < algs.size(); i++) {
             vector<int> data = origin;
@@ -84,7 +93,7 @@ int main(int argc, char *argv[]) {
             (*algs[i].second)(data);
             clock_t finish = clock();
 
-            if (is_correct(data))
+            if (is_correct(data, check_sum))
                 res.insert(make_pair((double)(finish - start) / CLOCKS_PER_SEC,
                             (*algs[i].first)()));
             /*
