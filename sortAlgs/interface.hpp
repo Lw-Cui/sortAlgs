@@ -1,7 +1,6 @@
-#ifndef _QSORT_H_
-#define _QSORT_H_
+#ifndef _INTERFACE_
+#define _INTERFACE_
 #include <vector>
-
 extern "C" {
     void sort(std::vector<int> &array);
     const char *self();

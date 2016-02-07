@@ -1,4 +1,4 @@
-#include "qsort3way.hpp"
+#include "interface.hpp"
 #include <cstdio>
 using namespace std;
 

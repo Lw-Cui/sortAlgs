@@ -1,4 +1,4 @@
-#include "heap.hpp"
+#include "interface.hpp"
 using namespace std;
 
 int left(int pos) {

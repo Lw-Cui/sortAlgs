@@ -1,4 +1,5 @@
 #include <dlfcn.h>
+#include <cassert>
 #include <ctime>
 #include <cstdlib>
 #include <vector>
@@ -12,8 +13,11 @@ const char *NAME = "self";
 
 void load_handle(vector<void *> &handle, int num, char *so[]) {
     void *lib_handle = NULL;
+	char lib_name[100];
     for (int i = 0; i < num; i++) {
-        if ((lib_handle = dlopen(so[i], RTLD_NOW)) == NULL) {
+		int n = snprintf(lib_name, sizeof(lib_name), "lib%s.so", so[i] + 2);
+		assert(n >= 0 && "overflow");
+        if ((lib_handle = dlopen(lib_name, RTLD_NOW)) == NULL) {
             printf("Open Error %s\n", dlerror());
             continue;
         }

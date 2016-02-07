@@ -1,4 +1,4 @@
-#include "bubble.hpp"
+#include "interface.hpp"
 using namespace std;
 
 void sort(std::vector<int> &array) {

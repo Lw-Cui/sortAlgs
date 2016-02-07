@@ -1,4 +1,4 @@
-#include "merge.hpp"
+#include "interface.hpp"
 #include <cstdio>
 using namespace std;
 void merge(vector<int> &array,

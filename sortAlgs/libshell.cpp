@@ -1,4 +1,4 @@
-#include "shell.hpp"
+#include "interface.hpp"
 #include <cstdio>
 using namespace std;
 
@@ -23,11 +23,3 @@ const char *self() {
 	return "Shell sort";
 }
 
-int main() {
-	int data[] = {3, 2, 1, 5, 1, 2, 6, 7, 3, 7, 11, 12};
-	vector<int> a(data, data + sizeof(data) / sizeof(int));
-	sort(a);
-	for (int i = 0; i < a.size(); i++)
-		printf("%d ", a[i]);
-	return 0;
-}

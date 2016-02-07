@@ -1,5 +1,5 @@
+#include "interface.hpp"
 #include <iostream>
-#include "qsort.hpp"
 using namespace std;
 
 void sortIndex(vector<int> &array, int left, int right) {
