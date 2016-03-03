@@ -2,14 +2,14 @@ SRC := $(wildcard *.cpp)
 OBJ := $(patsubst %.cpp, %.o, $(SRC))
 SO := $(patsubst %.cpp, %.so, $(SRC))
 HEAD := $(wildcard *.hpp)
-POSITION := /usr/lib
+POSITION := ../lib
 
 CC := g++
-CFLAG := -shared -fPIC
-OBJFLAG := -Wall -c
+CFLAG := -shared
+OBJFLAG := -Wall -Wextra -O2 -c -fPIC
 
 all: $(SO)
-	for so in $(SO); do sudo cp $$so $(POSITION); done
+	for so in $(SO); do mv $$so $(POSITION); done
 
 $(SO): %.so: %.o
 	$(CC) $< -o $@ $(CFLAG)
@@ -18,9 +18,7 @@ $(OBJ): %.o: %.cpp $(HEAD)
 	$(CC) $< -o $@ $(OBJFLAG)
 
 clean:
-	rm $(OBJ)
-	rm $(SO)
-	for so in $(SO); do sudo rm $(POSITION)/$$so -f; done
+	rm -f $(OBJ)
 
 rebuild: clean all
 
