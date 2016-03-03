@@ -30,9 +30,9 @@ g++ libqsort3way.o -o libqsort3way.so -shared
 
 for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.so  libqsort.so  libradix.so  libshell.so; do mv $so ../lib; done
 
-```l
+```
 
-* Then in the root directory of this repo you could type(or just run the `run.sh` directly):
+Then in the root directory of this repo you could type(or just run the `run.sh` directly):
 ```
 LD_LIBRARY_PATH=lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
