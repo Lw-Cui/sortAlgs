@@ -4,7 +4,7 @@
 This is a tiny project assigned by `Data structure and algorithm` course at `Harbin Institute of Technology`. We were asked to complement some sorting algorithms including `quick sort`, `heap sort`, `selection sort` and so on. Performance comparson is preferred.
 
 ## Feature ##
-To make the program scalable I use `shared object` file to implement algorithm. Any algs implementing the interface should work with this program without issue:
+To make the program scalable I use `shared object` file to implement algorithm. Any algs implementing the interface should work with this program without issue. The interface is in the `sortingLab/sortAlgs/interface.hpp`:
 ```
 void sort(std::vector<int> &);
 const char *self();
@@ -16,34 +16,35 @@ The first implement algs while the second show its info.
 
 ```
 lw@lw-ThinkPad-T420:~/sortingLab/sortAlgs$ make
-g++ libbubble.cpp -o libbubble.o -Wall -c
-g++ libbubble.o -o libbubble.so -shared -fPIC
-g++ libheap.cpp -o libheap.o -Wall -c
-g++ libheap.o -o libheap.so -shared -fPIC
-g++ libinsertion.cpp -o libinsertion.o -Wall -c
-g++ libinsertion.o -o libinsertion.so -shared -fPIC
-g++ libmerge.cpp -o libmerge.o -Wall -c
-g++ libmerge.o -o libmerge.so -shared -fPIC
+g++ libbubble.cpp -o libbubble.o -Wall -Wextra -O2 -c -fPIC
+g++ libbubble.o -o libbubble.so -shared
+g++ libheap.cpp -o libheap.o -Wall -Wextra -O2 -c -fPIC
+g++ libheap.o -o libheap.so -shared
+g++ libinsertion.cpp -o libinsertion.o -Wall -Wextra -O2 -c -fPIC
+g++ libinsertion.o -o libinsertion.so -shared
+g++ libmerge.cpp -o libmerge.o -Wall -Wextra -O2 -c -fPIC
+g++ libmerge.o -o libmerge.so -shared
+g++ libqsort3way.cpp -o libqsort3way.o -Wall -Wextra -O2 -c -fPIC
+g++ libqsort3way.o -o libqsort3way.so -shared
 ...
 
-for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.so  libqsort.so  libradix.so  libshell.so; do sudo cp $so /usr/lib; done
+for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.so  libqsort.so  libradix.so  libshell.so; do mv $so ../lib; done
 
-```
-*Yeah you should be granted `sudo` privilege.*
-
+```l
 
 * Then in the root directory of this repo you could type(or just run the `run.sh` directly):
 ```
-g++ SortCompare.cpp -ldl -g -o SortCompare.out
-./SortCompare.out \
-		-linsertion \
-		-lqsort\
-		-lheap\
-		-lbubble\
-		-lradix\
-		-lqsort3way\
-		-lmerge\
-		-lshell
+LD_LIBRARY_PATH=lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+g++ SortCompare.cpp -ldl -Wall -Wextra -O2 -g -o SortCompare.out
+./SortCompare.out\
+                -linsertion\
+                -lqsort\
+                -lheap\
+                -lbubble\
+                -lradix\
+                -lqsort3way\
+                -lmerge
 
 ``` 
 Here you could replace those *.so with library you choose.
