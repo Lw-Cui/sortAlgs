@@ -10,4 +10,5 @@ g++ SortCompare.cpp -ldl -Wall -Wextra -O2 -g -o SortCompare.out
 		-lradix\
 		-lqsort3way\
 		-lmerge\
-		-lshell
+		-lshell\
+		-lselection
