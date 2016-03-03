@@ -29,7 +29,7 @@ void load_algs(vector<void *> &handle, vector<pair<Self, Mp> > &algs) {
     Mp method = NULL;
     Self self = NULL;
 
-    for (int i = 0; i < handle.size(); i++) {
+    for (size_t i = 0; i < handle.size(); i++) {
         if ((self = (Self)dlsym(handle[i], NAME)) == NULL) {
             printf("Open Error %s\n", dlerror());
             continue;
@@ -44,18 +44,18 @@ void load_algs(vector<void *> &handle, vector<pair<Self, Mp> > &algs) {
 }
 
 void destruct_handle(vector<void *> &handle) {
-    for (int i = 0; i < handle.size(); i++)
+    for (size_t i = 0; i < handle.size(); i++)
         dlclose(handle[i]);
     handle.clear();
 }
 
 bool is_correct(vector<int> &array, long long check_sum) {
-    for (int i = 1; i < array.size(); i++)
+    for (size_t i = 1; i < array.size(); i++)
         if (array[i - 1] > array[i])
             return false;
 
 	long long sum = 0;
-	for (int i = 0; i < array.size(); i++)
+	for (size_t i = 0; i < array.size(); i++)
 		sum += array[i];
 
 	return sum == check_sum? true: false;
@@ -85,11 +85,11 @@ int main(int argc, char *argv[]) {
         vector<int> origin = random(num * 10000);
 
 		long long check_sum = 0;
-		for (int i = 0; i < origin.size(); i++)
+		for (size_t i = 0; i < origin.size(); i++)
 			check_sum += origin[i];
         printf("\nFor %d integers\n", num * 10000);
 
-        for (int i = 0; i < algs.size(); i++) {
+        for (size_t i = 0; i < algs.size(); i++) {
             vector<int> data = origin;
 
             clock_t start = clock();
