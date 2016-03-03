@@ -9,6 +9,7 @@ CFLAG := -shared
 OBJFLAG := -Wall -Wextra -O2 -c -fPIC
 
 all: $(SO)
+	mkdir ../lib
 	for so in $(SO); do mv $$so $(POSITION); done
 
 $(SO): %.so: %.o
