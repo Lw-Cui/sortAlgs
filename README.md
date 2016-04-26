@@ -32,22 +32,8 @@ for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.
 
 ```
 
-Then in the root directory of this repo you could type(or just run the `run.sh` directly):
-```
-LD_LIBRARY_PATH=lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH
-g++ SortCompare.cpp -ldl -Wall -Wextra -O2 -g -o SortCompare.out
-./SortCompare.out\
-                -linsertion\
-                -lqsort\
-                -lheap\
-                -lbubble\
-                -lradix\
-                -lqsort3way\
-                -lmerge
-
-``` 
-Here you could replace those *.so with library you choose.
+Then in the root directory of this repo you could type `make`.
+The executable file built by `Makefile` will search the subdir `lib` in repo and dynamically load `lib(\w+).so` object.
 
  * Result
 ```
