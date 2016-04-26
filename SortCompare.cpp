@@ -5,11 +5,34 @@
 #include <vector>
 #include <map>
 #include <cstdio>
+#include <regex>
+#include <sys/types.h>
+#include <dirent.h>
 using namespace std;
 typedef void (*Mp)(vector<int> &);
 typedef const char *(*Self)();
 const char *ALGS = "sort";
 const char *NAME = "self";
+const char *LIBDIR = "./lib";
+
+void load_handle(std::vector<void *> &handle, const char *dir) {
+    void *lib_handle = NULL;
+    DIR *pDir;
+    char lib_name[100];
+    struct dirent* ptr;
+    if (!(pDir = opendir(dir))) return;
+    const regex pattern("lib(\\w+).so");
+    while ((ptr = readdir(pDir)) != NULL)
+        if (regex_match(ptr->d_name, pattern)) {
+            int n = snprintf(lib_name, sizeof(lib_name), "%s/%s", dir, ptr->d_name);
+            if (n < 0 || (lib_handle = dlopen(lib_name, RTLD_NOW)) == NULL) {
+                printf("Open Error %s\n", dlerror());
+            } else {
+                handle.push_back(lib_handle);
+            }
+        }
+    closedir(pDir);
+}
 
 void load_handle(vector<void *> &handle, int num, char *so[]) {
     void *lib_handle = NULL;
@@ -72,12 +95,13 @@ vector<int> random(int num) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 3) return 0;
+    //if (argc < 3) return 0;
 
     vector<pair<Self, Mp> > algs;
     vector<void *> handle;
 
-    load_handle(handle, argc - 1, argv + 1);
+    //load_handle(handle, argc - 1, argv + 1);
+    load_handle(handle, LIBDIR);
     load_algs(handle, algs);
 
     for (int num = 1; num < 10; num += 2) {
