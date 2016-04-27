@@ -34,6 +34,7 @@ for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.
 
 Then in the root directory of this repo you could type `make`.
 The executable file built by `Makefile` will search the subdir `lib` in repo and dynamically load `lib(\w+).so` object.
+You could specify different distribution to test algorithm performance by adding compile option `-DPOISSON` or `-DBINOMIAL`(default is uniform distribution).
 
  * Result
 ```

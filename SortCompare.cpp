@@ -87,12 +87,12 @@ bool is_correct(vector<int> &array, long long check_sum) {
 
 vector<int> random(int num) {
     default_random_engine generator;
-#if UNIFORM
-    uniform_int_distribution<int> distribution(1,num);
+#if BINOMIAL
+    binomial_distribution<int> distribution(num);
 #elif POISSON
     poisson_distribution<int> distribution(num / 3);
 #else
-    binomial_distribution<int> distribution(num);
+    uniform_int_distribution<int> distribution(1,num);
 #endif
     auto dice = bind (distribution, generator);
     vector<int> random_variable;
