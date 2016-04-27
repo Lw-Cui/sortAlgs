@@ -1,6 +1,6 @@
-#include <dlfcn.h>
 #include <cassert>
 #include <ctime>
+#include <random>
 #include <cstdlib>
 #include <vector>
 #include <map>
@@ -8,6 +8,7 @@
 #include <regex>
 #include <sys/types.h>
 #include <dirent.h>
+#include <dlfcn.h>
 using namespace std;
 typedef void (*Mp)(vector<int> &);
 typedef const char *(*Self)();
@@ -85,11 +86,19 @@ bool is_correct(vector<int> &array, long long check_sum) {
 }
 
 vector<int> random(int num) {
+    default_random_engine generator;
+#if UNIFORM
+    uniform_int_distribution<int> distribution(1,num);
+#elif POISSON
+    poisson_distribution<int> distribution(num / 3);
+#else
+    binomial_distribution<int> distribution(num);
+#endif
+    auto dice = bind (distribution, generator);
     vector<int> random_variable;
 
-    srand(time(NULL));
     while (num--) 
-        random_variable.push_back(rand());
+        random_variable.push_back(dice());
 
     return random_variable;
 }
@@ -104,7 +113,7 @@ int main(int argc, char *argv[]) {
     load_handle(handle, LIBDIR);
     load_algs(handle, algs);
 
-    for (int num = 1; num < 10; num += 2) {
+    for (int num = 1; num < 10; num += 3) {
         multimap<double, const char *> res;
         vector<int> origin = random(num * 10000);
 
@@ -117,17 +126,12 @@ int main(int argc, char *argv[]) {
             vector<int> data = origin;
 
             clock_t start = clock();
-            //printf("%s\n", (*algs[i].first)());
             (*algs[i].second)(data);
             clock_t finish = clock();
 
             if (is_correct(data, check_sum))
                 res.insert(make_pair((double)(finish - start) / CLOCKS_PER_SEC,
                             (*algs[i].first)()));
-            /*
-            for (int i = 0; i < data.size(); i++)
-                printf("%d ", data[i]);
-            */
         }
 
         typedef multimap<double, const char *>::iterator multip;
