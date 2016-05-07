@@ -12,25 +12,8 @@ const char *self();
 The first implement algs while the second show its info.
 
 ## Usage ##
-* In subdirectory `sortAlgs` of this repository please execute `make` command.
+* In subdirectory `sortAlgs` of this repository please execute `cmake . && make` command.
 
-```
-lw@lw-ThinkPad-T420:~/sortingLab/sortAlgs$ make
-g++ libbubble.cpp -o libbubble.o -Wall -Wextra -O2 -c -fPIC
-g++ libbubble.o -o libbubble.so -shared
-g++ libheap.cpp -o libheap.o -Wall -Wextra -O2 -c -fPIC
-g++ libheap.o -o libheap.so -shared
-g++ libinsertion.cpp -o libinsertion.o -Wall -Wextra -O2 -c -fPIC
-g++ libinsertion.o -o libinsertion.so -shared
-g++ libmerge.cpp -o libmerge.o -Wall -Wextra -O2 -c -fPIC
-g++ libmerge.o -o libmerge.so -shared
-g++ libqsort3way.cpp -o libqsort3way.o -Wall -Wextra -O2 -c -fPIC
-g++ libqsort3way.o -o libqsort3way.so -shared
-...
-
-for so in  libbubble.so  libheap.so  libinsertion.so  libmerge.so  libqsort3way.so  libqsort.so  libradix.so  libshell.so; do mv $so ../lib; done
-
-```
 
 Then in the root directory of this repo you could type `make`.
 The executable file built by `Makefile` will search the subdir `lib` in repo and dynamically load `lib(\w+).so` object.
