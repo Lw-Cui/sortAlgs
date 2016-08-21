@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(SortLab)
-SET(GCC_COVERAGE_COMPILE_FLAGS "-O2 -Wall -Wextra -W -ggdb3 -std=c++14")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-O2 -Wall -Wextra -W -ggdb3 -std=c++14 -pthread")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 add_subdirectory(sortAlgs)
 set(SRC SortCompare.cpp)

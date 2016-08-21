@@ -1,4 +1,4 @@
-set(files "heap" "merge" "qsort" "qsort3way" "bubble" "shell" "radix" "selection" "insertion")
+set(files "heap" "merge" "qsort" "qsort3way" "bubble" "shell" "radix" "selection" "insertion" "qsortParallel")
 foreach(file ${files})
 	add_library(${file} SHARED "${file}.cpp")
 endforeach()
